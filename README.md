@@ -173,7 +173,8 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 
 7. 以上完成了异常的捕获并保存到 sd 卡上，等待 app 再次启动的时候，上传异常信息到服务器上。
 8. 保存到 sd 卡上的位置
-![手机SD卡位置](http://opvv5mo0o.bkt.clouddn.com/screen1.png)
+
+	![手机SD卡位置](http://opvv5mo0o.bkt.clouddn.com/screen1.png)
 9. SD 卡中拿到的 Log 信息
 
 		SUPPORTED_64_BIT_ABIS=[Ljava.lang.String;@58ff504
