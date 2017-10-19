@@ -10,6 +10,7 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 
 * 类位于：java.lang.Thread.UncaughtExceptionHandler
 * 接口源码：
+
 			public interface UncaughtExceptionHandler {
 				/**
 				 * Method invoked when the given thread terminates due to the
