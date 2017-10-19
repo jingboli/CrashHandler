@@ -26,8 +26,10 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 
 ### 具体实现
 1. 创建一个类，实现接口`UncaughtExceptionHandler`
+
 				public class CrashHandler implements UncaughtExceptionHandler
 2. 实现接口的方法`uncaughtException(Thread t, Throwable e)`，异常的处理就在这里，比如保存异常信息到 SD 卡，自定义错误弹出信息，自动退出。
+
 				@Override
 				public void uncaughtException(Thread t, Throwable e) {
 					//收集错误信息，保存到 sd 卡上
@@ -46,6 +48,7 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 					System.exit(1);
 				}
 3. `CrashHandler` 采用单例模式。
+
 			public class CrashHandler implements UncaughtExceptionHandler {
 
 				private static CrashHandler mInstance;
@@ -68,11 +71,13 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 
 			}
 4. 定义一个方法，用于把当前应用注册到系统的异常处理中，让系统知道由自定义的异常捕获器处理。
+
 		public void register(Context context) {
 			mContext = context;
 			Thread.setDefaultUncaughtExceptionHandler(this);
 		}
 5. 在 Application 中注册。
+
 		public class CrashHandlerApplication extends Application {
 
 			@Override
@@ -82,6 +87,7 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 			}
 		}
 6. 收集错误信息并保存到 SD 卡上。
+
 		//用于存储设备信息
 		private Map<String, String> mInfo = new HashMap<>();
 		//格式化时间，作为Log文件名
@@ -169,6 +175,7 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 8. 保存到 sd 卡上的位置
 ![手机SD卡位置](image/screen1.png)
 9. SD 卡中拿到的 Log 信息
+
 		SUPPORTED_64_BIT_ABIS=[Ljava.lang.String;@58ff504
 		versionCode=1
 		BOARD=msm8939
