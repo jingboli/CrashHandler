@@ -10,62 +10,62 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 
 * 类位于：java.lang.Thread.UncaughtExceptionHandler
 * 接口源码：
-		public interface UncaughtExceptionHandler {
-			/**
-			 * Method invoked when the given thread terminates due to the
-			 * given uncaught exception.
-			 * <p>Any exception thrown by this method will be ignored by the
-			 * Java Virtual Machine.
-			 * @param t the thread
-			 * @param e the exception
-			 */
-			void uncaughtException(Thread t, Throwable e);
-		}
+			public interface UncaughtExceptionHandler {
+				/**
+				 * Method invoked when the given thread terminates due to the
+				 * given uncaught exception.
+				 * <p>Any exception thrown by this method will be ignored by the
+				 * Java Virtual Machine.
+				 * @param t the thread
+				 * @param e the exception
+				 */
+				void uncaughtException(Thread t, Throwable e);
+			}
 * 主要是通过实现接口的 `uncaughtException(Thread t, Throwable e)` 方法，实现 crash 的捕获和保存到 sd 卡，然后联网的情况下再上传到服务器。
 
 ### 具体实现
 1. 创建一个类，实现接口`UncaughtExceptionHandler`
-		public class CrashHandler implements UncaughtExceptionHandler
+				public class CrashHandler implements UncaughtExceptionHandler
 2. 实现接口的方法`uncaughtException(Thread t, Throwable e)`，异常的处理就在这里，比如保存异常信息到 SD 卡，自定义错误弹出信息，自动退出。
-			@Override
-			public void uncaughtException(Thread t, Throwable e) {
-				//收集错误信息，保存到 sd 卡上
-				errorInfo2SD();
-				//弹出自定义的错误提醒
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						Looper.prepare();
-						Toast.makeText(mContext, "UnCrashException", Toast.LENGTH_SHORT).show();
-						Looper.loop();
-					}
-				});
-				//杀掉进程，退出应用
-				Process.killProcess(Process.myPid());
-				System.exit(1);
-			}
+				@Override
+				public void uncaughtException(Thread t, Throwable e) {
+					//收集错误信息，保存到 sd 卡上
+					errorInfo2SD();
+					//弹出自定义的错误提醒
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							Looper.prepare();
+							Toast.makeText(mContext, "UnCrashException", Toast.LENGTH_SHORT).show();
+							Looper.loop();
+						}
+					});
+					//杀掉进程，退出应用
+					Process.killProcess(Process.myPid());
+					System.exit(1);
+				}
 3. `CrashHandler` 采用单例模式。
-		public class CrashHandler implements UncaughtExceptionHandler {
+			public class CrashHandler implements UncaughtExceptionHandler {
 
-			private static CrashHandler mInstance;
+				private static CrashHandler mInstance;
 
-			private CrashHandler() {
+				private CrashHandler() {
 
-			}
+				}
 
-			// 单例模式-懒汉
-			public static CrashHandler getInstance() {
-				if (mInstance == null) {
-					synchronized (CrashHandler.class) {
-						if (mInstance == null) {
-							mInstance = new CrashHandler();
+				// 单例模式-懒汉
+				public static CrashHandler getInstance() {
+					if (mInstance == null) {
+						synchronized (CrashHandler.class) {
+							if (mInstance == null) {
+								mInstance = new CrashHandler();
+							}
 						}
 					}
+					return mInstance;
 				}
-				return mInstance;
-			}
 
-		}
+			}
 4. 定义一个方法，用于把当前应用注册到系统的异常处理中，让系统知道由自定义的异常捕获器处理。
 		public void register(Context context) {
 			mContext = context;
@@ -166,6 +166,7 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 
 7. 以上完成了异常的捕获并保存到 sd 卡上，等待 app 再次启动的时候，上传异常信息到服务器上。
 8. 保存到 sd 卡上的位置
+![手机SD卡位置](image/screen1.png)
 9. SD 卡中拿到的 Log 信息
 		SUPPORTED_64_BIT_ABIS=[Ljava.lang.String;@58ff504
 		versionCode=1
