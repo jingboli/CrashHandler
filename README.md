@@ -246,3 +246,5 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 		    }
 
 		}
+
+12. [源码](https://github.com/jingbolee/CrashHandler)
