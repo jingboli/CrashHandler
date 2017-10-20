@@ -223,26 +223,26 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 10. 通过以上 log ， 可以看到因为 `NullPointerException` 造成的退出。原因是 `MainActivity.java` 的第 `26` 行造成的。
 11. 工程的 `MainActivity` 类的源码，可以看到获取 `tv2` 的时候因为没有实例化，造成的空指针
 
-	public class MainActivity extends AppCompatActivity {
+		public class MainActivity extends AppCompatActivity {
 
-	    private TextView tv1;
-	    private TextView tv2;
+		    private TextView tv1;
+		    private TextView tv2;
 
 
 
-	    @Override
-	    protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		tv1 = (TextView) findViewById(R.id.tv1);
-
-		tv1.setOnClickListener(new OnClickListener() {
 		    @Override
-		    public void onClick(View v) {
-			Toast.makeText(MainActivity.this, tv2.getText().toString(), Toast.LENGTH_SHORT).show();
+		    protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_main);
+			tv1 = (TextView) findViewById(R.id.tv1);
+
+			tv1.setOnClickListener(new OnClickListener() {
+			    @Override
+			    public void onClick(View v) {
+				Toast.makeText(MainActivity.this, tv2.getText().toString(), Toast.LENGTH_SHORT).show();
+			    }
+			});
+
 		    }
-		});
 
-	    }
-
-	}
+		}
