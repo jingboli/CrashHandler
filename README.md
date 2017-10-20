@@ -219,3 +219,5 @@ Android app 出现 crash 时，会出现 “程序异常退出” 的提示并�
 			at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:687)
 
 		-----Crash Log End-----
+		
+10. 通过以上 log ， 可以看到因为 `NullPointerException` 造成的退出。原因是 `MainActivity.java` 的第 `26` 行造成的。
